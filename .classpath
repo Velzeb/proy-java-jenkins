@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="punto-de-venta-Java-y-Mysql-main/src"/>
+	<classpathentry kind="lib" path="punto-de-venta-Java-y-Mysql-main/librerias/AbsoluteLayout.jar"/>
+	<classpathentry kind="lib" path="punto-de-venta-Java-y-Mysql-main/librerias/itextpdf-5.5.1.jar"/>
+	<classpathentry kind="lib" path="punto-de-venta-Java-y-Mysql-main/librerias/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="punto-de-venta-Java-y-Mysql-main/librerias/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="punto-de-venta-Java-y-Mysql-main/librerias/jfreechart-1.0.19.jar"/>
+	<classpathentry kind="lib" path="punto-de-venta-Java-y-Mysql-main/librerias/mysql-connector-java-8.0.19.jar"/>
+	<classpathentry kind="output" path="punto-de-venta-Java-y-Mysql-main/build/classes"/>
+</classpath>

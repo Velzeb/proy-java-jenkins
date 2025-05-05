@@ -1,0 +1,10 @@
+INDEX VERSION 1.134+C:\Users\Carlos\Downloads\punto-de-venta\.metadata\.plugins\org.eclipse.jdt.core
+1273893450.index
+1353760038.index
+629306549.index
+1107964157.index
+2703602750.index
+1417760130.index
+1865797976.index
+1532305396.index
+581846251.index
