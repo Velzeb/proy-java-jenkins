@@ -2,11 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Clonar código') {
-            steps {
-                git 'https://github.com/Velzeb/proy-java-jenkins.git'
-            }
-        }
+        
 
         stage('Compilar') {
             steps {
