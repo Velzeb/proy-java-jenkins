@@ -25,7 +25,7 @@ public class ClienteDao {
     ResultSet rs;
     
     public boolean RegistrarCliente(Cliente cl){
-        String sql = "INSERT INTO clientes (dni, nombre, telefono, direccion) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO clientes (cedula, nombre, telefono, direccion) VALUES (?,?,?,?)";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
@@ -57,7 +57,7 @@ public class ClienteDao {
            while (rs.next()) {               
                Cliente cl = new Cliente();
                cl.setId(rs.getInt("id"));
-               cl.setDni(rs.getString("dni"));
+               cl.setDni(rs.getString("cedula"));
                cl.setNombre(rs.getString("nombre"));
                cl.setTelefono(rs.getString("telefono"));
                cl.setDireccion(rs.getString("direccion"));
@@ -89,7 +89,7 @@ public class ClienteDao {
    }
    
    public boolean ModificarCliente(Cliente cl){
-       String sql = "UPDATE clientes SET dni=?, nombre=?, telefono=?, direccion=? WHERE id=?";
+       String sql = "UPDATE clientes SET cedula=?, nombre=?, telefono=?, direccion=? WHERE id=?";
        try {
            ps = con.prepareStatement(sql);   
            ps.setString(1, cl.getDni());

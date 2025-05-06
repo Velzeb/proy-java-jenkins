@@ -14,7 +14,7 @@ public class ProveedorDao {
     PreparedStatement ps;
     ResultSet rs;
     public boolean RegistrarProveedor(Proveedor pr){
-        String sql = "INSERT INTO proveedor(ruc, nombre, telefono, direccion) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO proveedor(nit, nombre, telefono, direccion) VALUES (?,?,?,?)";
         try {
            con = cn.getConnection();
            ps = con.prepareStatement(sql);
@@ -46,7 +46,7 @@ public class ProveedorDao {
             while (rs.next()) {                
                 Proveedor pr = new Proveedor();
                 pr.setId(rs.getInt("id"));
-                pr.setRuc(rs.getString("ruc"));
+                pr.setRuc(rs.getString("nit"));
                 pr.setNombre(rs.getString("nombre"));
                 pr.setTelefono(rs.getString("telefono"));
                 pr.setDireccion(rs.getString("direccion"));
@@ -80,7 +80,7 @@ public class ProveedorDao {
     }
     
     public boolean ModificarProveedor(Proveedor pr){
-        String sql = "UPDATE proveedor SET ruc=?, nombre=?, telefono=?, direccion=? WHERE id=?";
+        String sql = "UPDATE proveedor SET nit=?, nombre=?, telefono=?, direccion=? WHERE id=?";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
