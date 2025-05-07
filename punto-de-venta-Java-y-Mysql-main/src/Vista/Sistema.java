@@ -531,7 +531,7 @@ public final class Sistema extends javax.swing.JFrame {
 		getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 560));
 
 		jLabel38.setFont(new java.awt.Font("Yu Gothic Light", 3, 36)); // NOI18N
-		jLabel38.setText("Sistema de Venta");
+		jLabel38.setText("Sistema de VentaCI CD");
 		getContentPane().add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 70, -1, -1));
 
 		jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/waves.png"))); // NOI18N
