@@ -15,11 +15,12 @@ pipeline {
                 '''
             }
         }
-stage('Verificar archivos compilados') {
-    steps {
-        bat 'dir /s /b out'
-    }
-}
+
+        stage('Verificar archivos compilados') {
+            steps {
+                bat 'dir /s /b out'
+            }
+        }
 
         stage('Verificar clase principal') {
             steps {
