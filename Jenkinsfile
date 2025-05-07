@@ -2,35 +2,41 @@ pipeline {
     agent any
 
     stages {
-        stage('Preparar') {
+        stage('Preparar carpetas') {
             steps {
-                bat 'if not exist out mkdir out'
+                bat '''
+                if exist out rmdir /s /q out
+                mkdir out
+                '''
             }
         }
 
         stage('Compilar') {
             steps {
                 bat '''
-                for /R src %%f in (*.java) do javac -cp ".;librerias\\*" -d out "%%f"
+                for /R src %%f in (*.java) do javac -cp "librerias/*" -d out "%%f"
                 '''
             }
         }
 
         stage('Empaquetar') {
             steps {
-                bat 'jar cfe app.jar sistemaventa.SistemaVenta -C out .'
+                bat '''
+                echo Main-Class: sistemaventa.SistemaVenta > manifest.txt
+                jar cfm app.jar manifest.txt -C out .
+                '''
             }
         }
 
         stage('Ejecutar') {
             steps {
-                bat 'java -cp "app.jar;librerias\\*" sistemaventa.SistemaVenta'
+                bat 'java -jar app.jar'
             }
         }
 
         stage('Finalizado') {
             steps {
-                echo '✅ Build y ejecución completos.'
+                echo '✔️ Proceso completado correctamente.'
             }
         }
     }
