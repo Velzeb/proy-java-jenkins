@@ -1,37 +1,42 @@
 pipeline {
     agent any
 
+    environment {
+        ANT_HOME = '/path/to/ant'  // Asegúrate de que la ruta sea correcta si usas una instalación de Ant en Jenkins
+        PATH = "${env.ANT_HOME}/bin:${env.PATH}"  // Incluye Ant en el PATH
+    }
+
     stages {
         stage('Preparar directorio') {
             steps {
-                bat '''
-                    rmdir /s /q out
-                    mkdir out
-                '''
+                // Limpiar el directorio de trabajo antes de comenzar
+                deleteDir()
             }
         }
 
         stage('Compilar') {
             steps {
-                bat '''
-                    for /R src %%f in (*.java) do javac -cp "librerias/*;out" -d out "%%f"
-                '''
+                script {
+                    // Ejecutar Ant para compilar el proyecto
+                    // Asegúrate de que el archivo build.xml esté en la raíz del proyecto
+                    sh 'ant -f build.xml'
+                }
             }
         }
 
         stage('Empaquetar JAR') {
             steps {
-                bat '''
-                    echo Main-Class: sistemaventa.SistemaVenta > manifest.txt
-                    jar cfm app.jar manifest.txt -C out .
-                    del manifest.txt
-                '''
+                script {
+                    // Verifica si el JAR se empaquetó correctamente. Ajusta la ruta según el nombre del archivo generado.
+                    sh 'jar tf dist/app.jar'
+                }
             }
         }
 
         stage('Ejecutar') {
             steps {
-                bat 'java -jar app.jar'
+                // Ejecutar el archivo JAR generado
+                sh 'java -jar dist/app.jar'
             }
         }
 
