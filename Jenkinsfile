@@ -2,23 +2,34 @@ pipeline {
     agent any
 
     stages {
-        
+        stage('Checkout') {
+            steps {
+                // Jenkins ya hace esto automáticamente, pero lo dejamos claro
+                checkout([$class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    userRemoteConfigs: [[url: 'https://github.com/Velzeb/proy-java-jenkins.git']]
+                ])
+            }
+        }
 
         stage('Compilar') {
             steps {
-                sh 'javac -d bin src/*.java'
+                echo 'Compilando proyecto...'
+                // Asumiendo que usas javac y tu código está en src/
+                sh 'javac -d out $(find src -name "*.java")'
             }
         }
 
         stage('Empaquetar') {
             steps {
-                sh 'jar cf app.jar -C bin .'
+                echo 'Empaquetando...'
+                sh 'jar -cvf app.jar -C out .'
             }
         }
 
         stage('Finalizado') {
             steps {
-                echo 'Build completo.'
+                echo 'Build completado correctamente.'
             }
         }
     }
