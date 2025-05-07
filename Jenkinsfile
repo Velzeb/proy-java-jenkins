@@ -2,23 +2,28 @@ pipeline {
     agent any
 
     stages {
-        
+        stage('Preparar') {
+            steps {
+                bat 'if not exist bin mkdir bin'
+            }
+        }
 
         stage('Compilar') {
             steps {
-                sh 'javac -d bin src/*.java'
+                bat 'dir src /s /b *.java > sources.txt'
+                bat 'javac -cp ".;librerias\\*" -d bin @sources.txt'
             }
         }
 
         stage('Empaquetar') {
             steps {
-                sh 'jar cf app.jar -C bin .'
+                bat 'jar cfe app.jar sistemaventa.SistemaVenta -C bin .'
             }
         }
 
         stage('Finalizado') {
             steps {
-                echo 'Build completo.'
+                echo '✅ Build completo.'
             }
         }
     }
