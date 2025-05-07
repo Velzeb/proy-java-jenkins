@@ -2,34 +2,35 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Preparar') {
             steps {
-                // Jenkins ya hace esto automáticamente, pero lo dejamos claro
-                checkout([$class: 'GitSCM',
-                    branches: [[name: '*/main']],
-                    userRemoteConfigs: [[url: 'https://github.com/Velzeb/proy-java-jenkins.git']]
-                ])
+                bat 'if not exist out mkdir out'
             }
         }
 
         stage('Compilar') {
             steps {
-                    echo 'Compilando proyecto...'
-                    bat 'mkdir out && for /R src %f in (*.java) do javac -d out "%f"'
+                bat '''
+                for /R src %%f in (*.java) do javac -cp ".;librerias\\*" -d out "%%f"
+                '''
             }
         }
 
-
         stage('Empaquetar') {
             steps {
-                echo 'Empaquetando...'
-                sh 'jar -cvf app.jar -C out .'
+                bat 'jar cfe app.jar sistemaventa.SistemaVenta -C out .'
+            }
+        }
+
+        stage('Ejecutar') {
+            steps {
+                bat 'java -cp "app.jar;librerias\\*" sistemaventa.SistemaVenta'
             }
         }
 
         stage('Finalizado') {
             steps {
-                echo 'Build completado correctamente.'
+                echo '✅ Build y ejecución completos.'
             }
         }
     }
