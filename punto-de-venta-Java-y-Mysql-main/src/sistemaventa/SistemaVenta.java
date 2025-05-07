@@ -1,4 +1,3 @@
-preuba de fallo ;   
 package sistemaventa;
 
 import Vista.Login;
