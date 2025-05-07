@@ -61,28 +61,34 @@ public class Login extends javax.swing.JFrame {
 
 	// Método para validar las credenciales ingresadas por el usuario
 	public void validar() {
-		String correo = txtCorreo.getText(); // Obtiene el texto del campo de correo
-		String pass = String.valueOf(txtPass.getPassword()); // Obtiene la contraseña
+		String correo = txtCorreo.getText().trim(); // Elimina espacios innecesarios
+		String pass = String.valueOf(txtPass.getPassword()).trim();
 
-		// Verifica que los campos no estén vacíos
-		if (!"".equals(correo) || !"".equals(pass)) {
-			lg = login.log(correo, pass); // Llama al método de login del DAO
-
-			// Verifica si el usuario fue autenticado correctamente
-			if (lg.getCorreo() != null && lg.getPass() != null) {
-				barra.setVisible(true); // Muestra la barra de progreso
-				contador = -1; // Reinicia el contador
-				barra.setValue(0); // Resetea la barra de progreso
-				barra.setStringPainted(true); // Muestra el porcentaje en la barra
-
-				// Inicia el temporizador con el tiempo definido
-				tiempo = new Timer(segundos, new BarraProgreso());
-				tiempo.start(); // Comienza el "ciclo" de la barra de progreso
-			} else {
-				// Muestra mensaje si las credenciales son incorrectas
-				JOptionPane.showMessageDialog(null, "Correo o la Contraseña incorrecta");
-			}
+		// Validación clara de campos vacíos
+		if (correo.isEmpty() || pass.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Debe ingresar correo y contraseña");
+			return;
 		}
+
+		// Intenta obtener el usuario autenticado
+		lg = login.log(correo, pass);
+
+		// Verifica que se haya autenticado correctamente
+		if (lg.getCorreo() != null && lg.getPass() != null) {
+			iniciarBarraProgreso(); // Inicia la carga si las credenciales son válidas
+		} else {
+			JOptionPane.showMessageDialog(null, "Correo o contraseña incorrectos");
+		}
+	}
+
+	// Método separado para iniciar la barra de progreso
+	private void iniciarBarraProgreso() {
+		barra.setVisible(true);
+		barra.setValue(0);
+		barra.setStringPainted(true);
+		contador = -1;
+		tiempo = new Timer(segundos, new BarraProgreso());
+		tiempo.start();
 	}
 
 	/**
