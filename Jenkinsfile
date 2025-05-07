@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     stages {
+
         stage('Preparar carpetas') {
             steps {
                 bat '''
@@ -14,7 +15,8 @@ pipeline {
         stage('Compilar') {
             steps {
                 bat '''
-                for /R src %%f in (*.java) do javac -cp "librerias/*" -d out "%%f"
+                javac -cp "librerias/*" -d out src/sistemaventa/SistemaVenta.java
+                for /R src %%f in (*.java) do javac -cp "librerias/*;out" -d out "%%f"
                 '''
             }
         }
@@ -23,6 +25,7 @@ pipeline {
             steps {
                 bat '''
                 echo Main-Class: sistemaventa.SistemaVenta > manifest.txt
+                echo. >> manifest.txt
                 jar cfm app.jar manifest.txt -C out .
                 '''
             }
