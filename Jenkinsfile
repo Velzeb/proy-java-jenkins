@@ -18,11 +18,19 @@ pipeline {
             steps {
                 catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                     bat '''
-                    set CLASSPATH=.;punto-de-venta-Java-y-Mysql-main\\librerias\\*
-                    for /R punto-de-venta-Java-y-Mysql-main\\src %%f in (*.java) do (
-                        echo Compilando: %%f
-                        javac -cp "%CLASSPATH%" -d out "%%f" || exit /b 1
-                    )
+                    mkdir out
+                    
+                    REM Compilar primero las clases base y modelos
+                    javac -cp ".;punto-de-venta-Java-y-Mysql-main\\librerias\\*" -d out punto-de-venta-Java-y-Mysql-main\\src\\Modelo\\*.java
+                    
+                    REM Compilar reportes después de los modelos
+                    javac -cp ".;punto-de-venta-Java-y-Mysql-main\\librerias\\*;out" -d out punto-de-venta-Java-y-Mysql-main\\src\\Reportes\\*.java
+                    
+                    REM Compilar las vistas que dependen de modelos y reportes
+                    javac -cp ".;punto-de-venta-Java-y-Mysql-main\\librerias\\*;out" -d out punto-de-venta-Java-y-Mysql-main\\src\\Vista\\*.java
+                    
+                    REM Compilar la clase principal del sistema al final
+                    javac -cp ".;punto-de-venta-Java-y-Mysql-main\\librerias\\*;out" -d out punto-de-venta-Java-y-Mysql-main\\src\\sistemaventa\\*.java
                     '''
                 }
             }
@@ -59,7 +67,8 @@ pipeline {
                     bat 'copy punto-de-venta-Java-y-Mysql-main\\librerias\\*.jar out\\lib\\'
                     
                     // Copiar los recursos de imágenes también
-                    bat 'xcopy /E /I punto-de-venta-Java-y-Mysql-main\\src\\Img out\\Img'
+                    bat 'mkdir out\\Img'
+                    bat 'xcopy /E /I /Y punto-de-venta-Java-y-Mysql-main\\src\\Img out\\Img'
                     
                     // Crear el JAR con la clase principal correcta y un manifest que incluya las librerías
                     bat 'echo Main-Class: sistemaventa.SistemaVenta > manifest.txt'
