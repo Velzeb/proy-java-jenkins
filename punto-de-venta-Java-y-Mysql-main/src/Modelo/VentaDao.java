@@ -1,4 +1,3 @@
-
 package Modelo;
 
 import com.itextpdf.text.BaseColor;
@@ -184,7 +183,7 @@ public class VentaDao {
                 rs = ps.executeQuery();
                 if (rs.next()) {
                     mensaje = rs.getString("mensaje");
-                    Encabezado.addCell("Ruc:    " + rs.getString("ruc") + "\nNombre: " + rs.getString("nombre") + "\nTeléfono: " + rs.getString("telefono") + "\nDirección: " + rs.getString("direccion") + "\n\n");
+                    Encabezado.addCell("Mensaje: " + mensaje);
                 }
             } catch (SQLException e) {
                 System.out.println(e.toString());
@@ -219,8 +218,14 @@ public class VentaDao {
                 ps.setInt(1, Cliente);
                 rs = ps.executeQuery();
                 if (rs.next()) {
-                    proveedor.addCell(rs.getString("nombre"));
-                    proveedor.addCell(rs.getString("telefono"));
+                    try {
+                        proveedor.addCell(rs.getString("nombre"));
+                        proveedor.addCell(rs.getString("telefono"));
+                    } catch (SQLException ex) {
+                        // Si no existen estas columnas, usar valores por defecto
+                        proveedor.addCell("Cliente #" + rs.getInt("id"));
+                        proveedor.addCell("No disponible");
+                    }
                     proveedor.addCell(rs.getString("direccion") + "\n\n");
                 } else {
                     proveedor.addCell("Publico en General");
@@ -255,7 +260,7 @@ public class VentaDao {
             tabla.addCell(c2);
             tabla.addCell(c3);
             tabla.addCell(c4);
-            String product = "SELECT d.id, d.id_pro,d.id_venta, d.precio, d.cantidad, p.id, p.nombre FROM detalle d INNER JOIN productos p ON d.id_pro = p.id WHERE d.id_venta = ?";
+            String product = "SELECT d.id, d.id_pro, d.id_venta, d.precio, d.cantidad, p.id, p.nombre FROM detalle d INNER JOIN productos p ON d.id_pro = p.id WHERE d.id_venta = ?";
             try {
                 ps = con.prepareStatement(product);
                 ps.setInt(1, idventa);
@@ -263,7 +268,12 @@ public class VentaDao {
                 while (rs.next()) {
                     double subTotal = rs.getInt("cantidad") * rs.getDouble("precio");
                     tabla.addCell(rs.getString("cantidad"));
-                    tabla.addCell(rs.getString("nombre"));
+                    try {
+                        tabla.addCell(rs.getString("nombre"));
+                    } catch (SQLException ex) {
+                        // Si no existe la columna nombre, usamos el ID del producto
+                        tabla.addCell("Producto #" + rs.getString("id_pro"));
+                    }
                     tabla.addCell(rs.getString("precio"));
                     tabla.addCell(String.valueOf(subTotal));
                 }
