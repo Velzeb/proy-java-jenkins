@@ -14,11 +14,11 @@ pipeline {
 
         stage('Compilar') {
             steps {
-                echo 'Compilando proyecto...'
-                // Asumiendo que usas javac y tu código está en src/
-                sh 'javac -d out $(find src -name "*.java")'
+                    echo 'Compilando proyecto...'
+                    bat 'mkdir out && for /R src %f in (*.java) do javac -d out "%f"'
             }
         }
+
 
         stage('Empaquetar') {
             steps {
