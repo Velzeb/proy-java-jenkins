@@ -8,11 +8,13 @@ pipeline {
             }
         }
 
-        stage('Compilar') {
-            steps {
-                bat 'javac -cp ".;librerias\\*" -d out src\\sistemaventa\\*.java'
-            }
-        }
+      stage('Compilar') {
+    steps {
+        bat '''
+        for /R src %%f in (*.java) do javac -cp ".;librerias\\*" -d out "%%f"
+        '''
+    }
+}
 
         stage('Empaquetar') {
             steps {
