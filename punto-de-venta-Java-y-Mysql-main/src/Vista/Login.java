@@ -7,8 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import Vista.Sistema;
 
-//Clase que representa la ventana de login de una aplicación Java con Swing
 public class Login extends javax.swing.JFrame {
 
 	// Instancia de la clase login, que almacena datos del usuario autenticado
